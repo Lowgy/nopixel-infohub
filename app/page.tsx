@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
+//Test Data for now to see the layout of page
 const servers = [
   {
     title: 'NoPixel 4.0 - Allow List (NA)',
