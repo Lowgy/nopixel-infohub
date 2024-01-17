@@ -18,6 +18,7 @@ const servers = [
     status: 'Online',
     currentPlayerCount: 220,
     totalPlayerCount: 220,
+    // Convert the string to calculate the time difference until 1AM and 1PM CST
     tsunami: '1 hour',
   },
   {
@@ -27,6 +28,7 @@ const servers = [
     status: 'Online',
     currentPlayerCount: 220,
     totalPlayerCount: 220,
+    // Convert the string to calculate the time difference until 6AM, 2PM, and 10PM CST
     tsunami: '1 hour',
   },
   {
@@ -36,9 +38,19 @@ const servers = [
     status: 'Online',
     currentPlayerCount: 220,
     totalPlayerCount: 220,
+    // Convert the string to calculate the time difference until 6AM, 2PM, and 10PM CST
     tsunami: '1 hour',
   },
 ];
+
+// Format the time so that the right countdown number is displayed
+const formatTime = (time: number): string => {
+  const hours = Math.floor(time / (1000 * 60 * 60));
+  const minutes = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((time % (1000 * 60)) / 1000);
+
+  return `${hours}: ${minutes}: ${seconds}`;
+};
 
 export default function Home() {
   return (
