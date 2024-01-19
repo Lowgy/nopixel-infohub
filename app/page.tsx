@@ -65,6 +65,7 @@ export default function Home() {
   const [currentServer, setCurrentServer] = useState('whitelist');
   const [serverData, setServerData] = useState('');
 
+  // Need to make these maniuplate the data structure above
   const {
     data: playerData,
     error: playerError,
