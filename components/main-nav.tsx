@@ -22,15 +22,18 @@ export function MainNav({ items }: MainNavProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="relative rounded-full text-black hover:bg-gray-100 bg-transparent">
+        <Button className="relative rounded-full text-black bg-gradient-to-r from-blue-400 to-emerald-400 ">
           <MenuIcon className="h-4 w-4  mr-2" /> Menu
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-14">
+      <DropdownMenuContent className="w-14 border-none bg-gradient-to-r from-blue-400 to-emerald-400">
         {items?.map(
           (item, index) =>
             item.href && (
-              <DropdownMenuItem key={index}>
+              <DropdownMenuItem
+                key={index}
+                className="bg-gradient-to-r from-blue-400 to-emerald-400 hover:text-white"
+              >
                 <Link href={item.href}>
                   <span>{item.title}</span>
                 </Link>

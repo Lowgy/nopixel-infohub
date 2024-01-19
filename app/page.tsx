@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
@@ -8,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import useSWR from 'swr';
 
 //Test Data for now to see the layout of page
 const servers = [
@@ -52,33 +56,67 @@ const formatTime = (time: number): string => {
   return `${hours}: ${minutes}: ${seconds}`;
 };
 
+const fetcher = async (url: string) => {
+  const res = await fetch(url);
+  return res.json();
+};
+
 export default function Home() {
+  const [currentServer, setCurrentServer] = useState('whitelist');
+  const [serverData, setServerData] = useState('');
+
+  const {
+    data: playerData,
+    error: playerError,
+    isLoading: playerLoading,
+  } = useSWR(`/api/players/${currentServer}`, fetcher, {
+    refreshWhenHidden: true,
+    refreshInterval: 1000000,
+  });
+
+  const {
+    data: infoData,
+    error: infoError,
+    isLoading: infoLoading,
+  } = useSWR(`/api/info/${currentServer}`, fetcher, {
+    refreshWhenHidden: true,
+    refreshInterval: 1000000,
+  });
+
+  useEffect(() => {}, [currentServer]);
+
   return (
-    <main className="flex min-h-screen flex-col items-center p-24 bg-gradient-to-r space-y-12 from-blue-400 to-emerald-400">
-      <div className="flex flex-col items-center">
-        <h1 className="font-bold text-3xl">NoPixel InfoHub</h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum
+    <main className="flex min-h-screen flex-col items-center p-24 space-y-12 bg-[#111827]">
+      <div className="flex flex-col items-center w-1/2 bg-white rounded-lg p-5">
+        <h1 className="font-bold text-3xl mb-4">NoPixel InfoHub</h1>
+        <p className="text-center mb-2">
+          Welcome to NoPixel InfoHub! Your #1 source for server status of
+          NoPixel 4.0 servers! The purpose of this site is to provide a quick
+          look at the status of the NoPixel 4.0 servers, to help RPers and
+          viewers alike to see if the server is online, current player count and
+          tsunami timer.
+        </p>
+        <p className="font-bold text-red-600 text-center">
+          THIS SITE IS NO AFFILIATED WITH OFFICIAL NOPIXEL AND IS STRICTLY A
+          SIDE PROJECT FOR DEVELOPMENT PRACTICE!
         </p>
       </div>
       <div className="flex flex-col w-full">
         <Tabs defaultValue="whitelist">
           <TabsList>
             {servers.map((server) => (
-              <TabsTrigger key={server.tabValue} value={server.tabValue}>
+              <TabsTrigger
+                key={server.tabValue}
+                value={server.tabValue}
+                onClick={() => setCurrentServer(server.tabValue)}
+              >
                 {server.tabTitle}
               </TabsTrigger>
             ))}
           </TabsList>
           {servers.map((server) => (
             <TabsContent key={server.tabValue} value={server.tabValue}>
-              <Card className="w-full">
+              <Card className="w-full bg-gradient-to-r from-blue-400 to-emerald-400">
                 <CardHeader>
                   <CardTitle>{server.title}</CardTitle>
                   <CardDescription
@@ -90,7 +128,7 @@ export default function Home() {
                       }
                     `}
                   >
-                    <span className="font-bold text-gray-500">Status:</span>{' '}
+                    <span className="font-bold text-black">Status:</span>{' '}
                     {server.status}
                   </CardDescription>
                 </CardHeader>
@@ -111,9 +149,7 @@ export default function Home() {
                 </CardContent>
                 <CardFooter>
                   <p>
-                    <span className="font-bold text-gray-500">
-                      Tsunami Timer:
-                    </span>{' '}
+                    <span className="font-bold text-black">Tsunami Timer:</span>{' '}
                     {server.tsunami}
                   </p>
                 </CardFooter>
