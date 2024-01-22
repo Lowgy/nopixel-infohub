@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/card';
 import useSWR from 'swr';
 
-const targetHours = [2, 14]; // 1 for 1am, 13 for 1pm
+const targetHours = [1, 13]; // 1 for 1am, 13 for 1pm
 
 // Function to find the closest countdown time
 const findClosestCountdown = () => {
@@ -52,7 +52,7 @@ const servers = [
     currentPlayerCount: 220,
     totalPlayerCount: 220,
     // Convert the string to calculate the time difference until 1AM and 1PM CST
-    tsunami: <CountdownTimer targetHour={closestCountdown === 2 ? 2 : 14} />,
+    tsunami: <CountdownTimer targetHour={closestCountdown === 1 ? 1 : 13} />,
   },
   {
     title: 'NoPixel 4.0 - Public - Blue (NA)',
