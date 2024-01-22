@@ -1,4 +1,6 @@
+"use client";
 import Image from 'next/image';
+import CountdownTimer from '../components/CountdownTimer';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Card,
@@ -8,6 +10,34 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+
+const targetHours = [2, 14]; // 1 for 1am, 13 for 1pm
+
+  const findClosestCountdown = () => {
+    const currentTimestamp = new Date().getTime();
+    const countdowns = targetHours.map((hour) => {
+      const targetTime = new Date(
+        new Date().getFullYear(),
+        new Date().getMonth(),
+        new Date().getDate(),
+        hour,
+        0,
+        0,
+        0
+      );
+
+      // If the target time is in the past for today, set it for tomorrow
+      if (currentTimestamp > targetTime.getTime()) {
+        targetTime.setDate(targetTime.getDate() + 1);
+      }
+
+      return targetTime.getTime() - currentTimestamp;
+    });
+
+    return Math.min(...countdowns.filter((countdown) => countdown > 0));
+  };
+  
+const closestCountdown = findClosestCountdown();
 
 //Test Data for now to see the layout of page
 const servers = [
@@ -19,7 +49,7 @@ const servers = [
     currentPlayerCount: 220,
     totalPlayerCount: 220,
     // Convert the string to calculate the time difference until 1AM and 1PM CST
-    tsunami: '1 hour',
+    tsunami: <CountdownTimer targetHour={closestCountdown === 2 ? 2 : 14} />,
   },
   {
     title: 'NoPixel 4.0 - Public - Blue (NA)',
@@ -42,15 +72,6 @@ const servers = [
     tsunami: '1 hour',
   },
 ];
-
-// Format the time so that the right countdown number is displayed
-const formatTime = (time: number): string => {
-  const hours = Math.floor(time / (1000 * 60 * 60));
-  const minutes = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((time % (1000 * 60)) / 1000);
-
-  return `${hours}: ${minutes}: ${seconds}`;
-};
 
 export default function Home() {
   return (
@@ -113,8 +134,8 @@ export default function Home() {
                   <p>
                     <span className="font-bold text-gray-500">
                       Tsunami Timer:
-                    </span>{' '}
-                    {server.tsunami}
+                      </span>{' '}
+                      {server.tsunami}
                   </p>
                 </CardFooter>
               </Card>
