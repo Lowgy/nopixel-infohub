@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import CountdownTimer from '../components/CountdownTimer';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Card,
@@ -13,6 +14,34 @@ import {
 } from '@/components/ui/card';
 import useSWR from 'swr';
 
+const targetHours = [2, 14]; // 1 for 1am, 13 for 1pm
+
+// Function to find the closest countdown time
+const findClosestCountdown = () => {
+  const currentTimestamp = new Date().getTime();
+  const countdowns = targetHours.map((hour) => {
+    const targetTime = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      new Date().getDate(),
+      hour,
+      0,
+      0,
+      0
+    );
+
+    if (currentTimestamp > targetTime.getTime()) {
+      targetTime.setDate(targetTime.getDate() + 1);
+    }
+
+    return targetTime.getTime() - currentTimestamp;
+  });
+
+  return Math.min(...countdowns.filter((countdown) => countdown > 0));
+};
+
+const closestCountdown = findClosestCountdown();
+
 //Test Data for now to see the layout of page
 const servers = [
   {
@@ -23,7 +52,7 @@ const servers = [
     currentPlayerCount: 220,
     totalPlayerCount: 220,
     // Convert the string to calculate the time difference until 1AM and 1PM CST
-    tsunami: '1 hour',
+    tsunami: <CountdownTimer targetHour={closestCountdown === 2 ? 2 : 14} />,
   },
   {
     title: 'NoPixel 4.0 - Public - Blue (NA)',
