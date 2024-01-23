@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-// Use targetHour when CountdownTimer is implemented in other files
 interface CountdownTimerProps {
   targetHour: number; // 1 for 1am, 13 for 1pm
 }
@@ -10,11 +9,26 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetHour }) => {
 
   useEffect(() => {
     const calculateCountdown = () => {
+      // Get the user's current time
       const currentTime = new Date();
+
+      // Get the user's timezone offset in minutes
+      const userTimezoneOffset = currentTime.getTimezoneOffset();
+
+      // Convert the offset to hours
+      const userTimezoneOffsetHours = userTimezoneOffset / 60;
+
+      // Convert to CST (Central Standard Time)
+      const cstOffset = -6; // CST offset is UTC-6
+
+      // Calculate the user's time in CST
+      const currentTimeInCST = new Date(currentTime.getTime() + (userTimezoneOffsetHours + cstOffset) * 60 * 60 * 1000);
+
+      // Incorporate the CST time to the targetTime
       const targetTime = new Date(
-        currentTime.getFullYear(),
-        currentTime.getMonth(),
-        currentTime.getDate(),
+        currentTimeInCST.getFullYear(),
+        currentTimeInCST.getMonth(),
+        currentTimeInCST.getDate(),
         targetHour,
         0,
         0,
@@ -22,11 +36,11 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetHour }) => {
       );
 
       // If the target time is in the past for today, set it for tomorrow
-      if (currentTime.getTime() > targetTime.getTime()) {
+      if (currentTimeInCST.getTime() > targetTime.getTime()) {
         targetTime.setDate(targetTime.getDate() + 1);
       }
 
-      const timeDifference = targetTime.getTime() - currentTime.getTime();
+      const timeDifference = targetTime.getTime() - currentTimeInCST.getTime();
       setCountdown(timeDifference);
     };
 

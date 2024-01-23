@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import CountdownTimer from '../components/CountdownTimer';
+import CountdownTimer from '@/components/CountdownTimer';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Card,
@@ -178,10 +178,10 @@ export default function Home() {
                   </div>
                 </CardContent>
                 <CardFooter>
-                  <p>
+                  <div>
                     <span className="font-bold text-black">Tsunami Timer:</span>{' '}
                     {server.tsunami}
-                  </p>
+                  </div>
                 </CardFooter>
               </Card>
             </TabsContent>
