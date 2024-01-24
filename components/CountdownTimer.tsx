@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 interface CountdownTimerProps {
-  targetHour: number; // 1 for 1am, 13 for 1pm
+  targetHour: number;
 }
 
 const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetHour }) => {

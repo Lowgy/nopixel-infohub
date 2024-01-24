@@ -14,30 +14,22 @@ import {
 } from '@/components/ui/card';
 import useSWR from 'swr';
 
-const targetHours = [1, 13]; // 1 for 1am, 13 for 1pm
+const allowHours = [1, 13]; // 1 for 1am, 13 for 1pm
 
 // Function to find the closest countdown time
 const findClosestCountdown = () => {
-  const currentTimestamp = new Date().getTime();
-  const countdowns = targetHours.map((hour) => {
-    const targetTime = new Date(
-      new Date().getFullYear(),
-      new Date().getMonth(),
-      new Date().getDate(),
-      hour,
-      0,
-      0,
-      0
-    );
-
-    if (currentTimestamp > targetTime.getTime()) {
-      targetTime.setDate(targetTime.getDate() + 1);
+  var targetHour = 0;
+  const currentHours = new Date().getHours();
+  for (var i = 0; i < allowHours.length; i++) {
+    if (targetHour > 13) {
+      targetHour = allowHours[0];
     }
-
-    return targetTime.getTime() - currentTimestamp;
-  });
-
-  return Math.min(...countdowns.filter((countdown) => countdown > 0));
+    if (allowHours[i] > currentHours) {
+      targetHour = allowHours[i];
+      break;
+    }
+  }
+  return targetHour;
 };
 
 const closestCountdown = findClosestCountdown();
@@ -52,7 +44,7 @@ const servers = [
     currentPlayerCount: 220,
     totalPlayerCount: 220,
     // Convert the string to calculate the time difference until 1AM and 1PM CST
-    tsunami: <CountdownTimer targetHour={closestCountdown === 1 ? 1 : 13} />,
+    tsunami: <CountdownTimer targetHour={closestCountdown} />,
   },
   {
     title: 'NoPixel 4.0 - Public - Blue (NA)',
