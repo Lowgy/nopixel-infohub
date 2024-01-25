@@ -15,9 +15,9 @@ import {
 import useSWR from 'swr';
 
 const allowHours = [1, 13]; // 1 for 1am, 13 for 1pm
-const publicHours = [6, 14, 22] // 6 for 6am, 14 for 2pm, 22 for 10pm
+const publicHours = [6, 14, 22]; // 6 for 6am, 14 for 2pm, 22 for 10pm
 
-// Function to find the closest countdown time 
+// Function to find the closest countdown time
 const findClosestCountdown = (hoursArray: number[]) => {
   const currentHours = new Date().getHours();
   let targetHour = hoursArray[0];
@@ -34,7 +34,6 @@ const findClosestCountdown = (hoursArray: number[]) => {
 
 const closestAllowCountdown = findClosestCountdown(allowHours);
 const closestPublicCountdown = findClosestCountdown(publicHours);
-
 
 //Test Data for now to see the layout of page
 const servers = [
@@ -86,7 +85,7 @@ export default function Home() {
     isLoading: playerLoading,
   } = useSWR(`/api/players/${currentServer}`, fetcher, {
     refreshWhenHidden: true,
-    refreshInterval: 1000000,
+    refreshInterval: 10000,
   });
 
   const {
@@ -95,7 +94,7 @@ export default function Home() {
     isLoading: infoLoading,
   } = useSWR(`/api/info/${currentServer}`, fetcher, {
     refreshWhenHidden: true,
-    refreshInterval: 1000000,
+    refreshInterval: 10000,
   });
 
   useEffect(() => {}, [currentServer]);
@@ -157,7 +156,17 @@ export default function Home() {
                     /> */}
                     Image of some sort?
                     <p className="text-2xl font-bold">
-                      {server.currentPlayerCount} / {server.totalPlayerCount}
+                      {playerData !== undefined
+                        ? playerData.length <= 220
+                          ? playerData.length
+                          : '220'
+                        : '220'}{' '}
+                      /{' '}
+                      {infoData !== undefined
+                        ? infoData.vars.sv_maxClients !== 8
+                          ? infoData.vars.sv_maxClients
+                          : '220'
+                        : '220'}
                     </p>
                     <p className="text-xl font-bold">Players Online</p>
                   </div>
