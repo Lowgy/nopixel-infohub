@@ -16,19 +16,19 @@ import useSWR from 'swr';
 
 const allowHours = [1, 13]; // 1 for 1am, 13 for 1pm
 
-// Function to find the closest countdown time
+// Function to find the closest countdown time (currently works only for Allow List server)
 const findClosestCountdown = () => {
-  var targetHour = 0;
   const currentHours = new Date().getHours();
-  for (var i = 0; i < allowHours.length; i++) {
-    if (targetHour > 13) {
-      targetHour = allowHours[0];
-    }
+
+  // Loop through the array. If the hour is greater than the current CST hour, let targetHour = the allowHour index
+  let targetHour = allowHours[0];
+  for (let i = 0; i < allowHours.length; i++) {
     if (allowHours[i] > currentHours) {
       targetHour = allowHours[i];
       break;
     }
   }
+  // When all values pass, CountdownTimer will increment to the next day starting from the first index
   return targetHour;
 };
 
@@ -44,6 +44,7 @@ const servers = [
     currentPlayerCount: 220,
     totalPlayerCount: 220,
     // Convert the string to calculate the time difference until 1AM and 1PM CST
+    // ERROR: Using closestCountdown will return N/A, and force the target hour into 0.
     tsunami: <CountdownTimer targetHour={closestCountdown} />,
   },
   {

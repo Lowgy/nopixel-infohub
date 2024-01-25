@@ -36,7 +36,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetHour }) => {
       );
 
       // If the target time is in the past for today, set it for tomorrow
-      if (currentTimeInCST.getTime() > targetTime.getTime()) {
+      if (currentTimeInCST.getHours() > targetTime.getHours()) {
         targetTime.setDate(targetTime.getDate() + 1);
       }
 
