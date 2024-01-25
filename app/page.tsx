@@ -14,33 +14,27 @@ import {
 } from '@/components/ui/card';
 import useSWR from 'swr';
 
-const targetHours = [1, 13]; // 1 for 1am, 13 for 1pm
+const allowHours = [1, 13]; // 1 for 1am, 13 for 1pm
+const publicHours = [6, 14, 22] // 6 for 6am, 14 for 2pm, 22 for 10pm
 
-// Function to find the closest countdown time
-const findClosestCountdown = () => {
-  const currentTimestamp = new Date().getTime();
-  const countdowns = targetHours.map((hour) => {
-    const targetTime = new Date(
-      new Date().getFullYear(),
-      new Date().getMonth(),
-      new Date().getDate(),
-      hour,
-      0,
-      0,
-      0
-    );
+// Function to find the closest countdown time 
+const findClosestCountdown = (hoursArray: number[]) => {
+  const currentHours = new Date().getHours();
+  let targetHour = hoursArray[0];
 
-    if (currentTimestamp > targetTime.getTime()) {
-      targetTime.setDate(targetTime.getDate() + 1);
+  for (let i = 0; i < hoursArray.length; i++) {
+    if (hoursArray[i] > currentHours) {
+      targetHour = hoursArray[i];
+      break;
     }
+  }
 
-    return targetTime.getTime() - currentTimestamp;
-  });
-
-  return Math.min(...countdowns.filter((countdown) => countdown > 0));
+  return targetHour;
 };
 
-const closestCountdown = findClosestCountdown();
+const closestAllowCountdown = findClosestCountdown(allowHours);
+const closestPublicCountdown = findClosestCountdown(publicHours);
+
 
 //Test Data for now to see the layout of page
 const servers = [
@@ -52,7 +46,7 @@ const servers = [
     currentPlayerCount: 220,
     totalPlayerCount: 220,
     // Convert the string to calculate the time difference until 1AM and 1PM CST
-    tsunami: <CountdownTimer targetHour={closestCountdown === 1 ? 1 : 13} />,
+    tsunami: <CountdownTimer targetHour={closestAllowCountdown} />,
   },
   {
     title: 'NoPixel 4.0 - Public - Blue (NA)',
@@ -62,7 +56,7 @@ const servers = [
     currentPlayerCount: 220,
     totalPlayerCount: 220,
     // Convert the string to calculate the time difference until 6AM, 2PM, and 10PM CST
-    tsunami: '1 hour',
+    tsunami: <CountdownTimer targetHour={closestPublicCountdown} />,
   },
   {
     title: 'NoPixel 4.0 - Public - Green (NA)',
@@ -72,18 +66,9 @@ const servers = [
     currentPlayerCount: 220,
     totalPlayerCount: 220,
     // Convert the string to calculate the time difference until 6AM, 2PM, and 10PM CST
-    tsunami: '1 hour',
+    tsunami: <CountdownTimer targetHour={closestPublicCountdown} />,
   },
 ];
-
-// Format the time so that the right countdown number is displayed
-const formatTime = (time: number): string => {
-  const hours = Math.floor(time / (1000 * 60 * 60));
-  const minutes = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((time % (1000 * 60)) / 1000);
-
-  return `${hours}: ${minutes}: ${seconds}`;
-};
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
