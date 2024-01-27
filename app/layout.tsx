@@ -5,6 +5,7 @@ import './globals.css';
 
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
+import { Analytics } from '@vercel/analytics/react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,7 +24,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="relative flex min-h-screen flex-col">
           <SiteHeader />
-          <div className="flex-1">{children}</div>
+          <div className="flex-1">
+            {children}
+            <Analytics />
+          </div>
           <SiteFooter />
         </div>
       </body>
