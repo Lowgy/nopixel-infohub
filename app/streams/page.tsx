@@ -17,7 +17,8 @@ interface Stream {
   thumbnail_url: string;
   title: string;
   type: string;
-  user_name: string;
+  display_name: string;
+  broadcast_login: string;
   user_id: string;
 }
 
@@ -45,30 +46,31 @@ export default function Streams() {
     setLoading(true);
     const token = await refreshAccessToken();
     if (token) {
-      fetch('https://api.twitch.tv/helix/streams?game_id=32982', {
-        method: 'GET',
-        headers: {
-          'Client-Id': `${process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID}`,
-          Authorization: `Bearer ${token.access_token}`,
-        },
-      })
+      fetch(
+        'https://api.twitch.tv/helix/search/channels?query=NoPixel&first=100&live_only=true&sort=views&game_id=32982',
+        {
+          method: 'GET',
+          headers: {
+            'Client-Id': `${process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID}`,
+            Authorization: `Bearer ${token.access_token}`,
+          },
+        }
+      )
         .then((response) => response.json())
         .then((data) => {
+          console.log(data);
           const filteredStreams = data.data.filter(
             (stream: Stream) =>
-              stream.type === 'live' &&
-              (stream.title.includes('NoPixel') ||
-                stream.title.includes('nopixel') ||
-                stream.title.includes('NP 4.0') ||
-                stream.title.includes('np 4.0') ||
-                stream.title.includes('No Pixel 4.0') ||
-                stream.title.includes('NOPIXEL') ||
-                stream.title.includes('NOPIXEL 4.0'))
+              stream.title.includes('NoPixel') ||
+              stream.title.includes('nopixel') ||
+              stream.title.includes('NP 4.0') ||
+              stream.title.includes('np 4.0') ||
+              stream.title.includes('No Pixel 4.0') ||
+              stream.title.includes('NOPIXEL') ||
+              stream.title.includes('NOPIXEL 4.0')
           );
           setStreams(filteredStreams);
-          const userIds = filteredStreams.map(
-            (stream: Stream) => stream.user_id
-          );
+          const userIds = filteredStreams.map((stream: Stream) => stream.id);
           console.log(filteredStreams, userIds);
           getUsers(userIds, token.access_token);
           setLoading(false);
@@ -144,11 +146,11 @@ export default function Streams() {
               <Image
                 alt="Profile Image"
                 src={`https://static-cdn.jtvnw.net/previews-ttv/live_user_${
-                  stream.user_name
+                  stream.broadcast_login
                 }-${320}x${180}.jpg`}
                 width={320}
                 height={180}
-                priority
+                loading="lazy"
               />
               <div className="flex flex-col">
                 <div className="flex flex-row p-1">
@@ -157,7 +159,7 @@ export default function Streams() {
                       <AvatarImage
                         src={
                           users &&
-                          users[index].display_name === stream.user_name
+                          users[index].display_name === stream.display_name
                             ? users[index].profile_image_url
                             : ''
                         }
@@ -169,12 +171,12 @@ export default function Streams() {
                   </div>
                   <div className="flex flex-col p-2">
                     <h1 className="font-bold line-clamp-1">{stream.title}</h1>
-                    <p>{stream.user_name}</p>
+                    <p>{stream.display_name}</p>
                   </div>
                 </div>
                 <Button asChild>
                   <Link
-                    href={`https://twitch.tv/${stream.user_name}`}
+                    href={`https://twitch.tv/${stream.display_name}`}
                     target="_blank"
                   >
                     Watch on Twitch
