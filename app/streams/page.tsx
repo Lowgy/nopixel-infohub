@@ -141,7 +141,7 @@ export default function Streams() {
           {streams?.map((stream, index) => (
             <div
               key={stream.id}
-              className="p-2 rounded bg-gradient-to-r from-blue-400 to-emerald-400 flex flex-col w-[320px]"
+              className="p-2 rounded bg-gradient-to-r from-blue-400 to-emerald-400 flex flex-col w-[px]"
             >
               <Image
                 alt="Profile Image"
