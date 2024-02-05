@@ -156,17 +156,14 @@ export default function Streams() {
                 <div className="flex flex-row p-1">
                   <div className="flex flex-col items-center justify-center">
                     <Avatar>
-                      <AvatarImage
-                        src={
-                          users &&
-                          users[index].display_name === stream.display_name
-                            ? users[index].profile_image_url
-                            : ''
-                        }
-                        width={48}
-                        height={48}
-                        loading="lazy"
-                      />
+                      {users && users[index] ? (
+                        <AvatarImage
+                          src={users[index].profile_image_url} // Error: The photos currently don't go to the correct streamers
+                          width={48}
+                          height={48}
+                          loading="lazy"
+                        />
+                      ) : null}
                     </Avatar>
                   </div>
                   <div className="flex flex-col p-2">
