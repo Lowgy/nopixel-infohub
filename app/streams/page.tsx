@@ -158,7 +158,7 @@ export default function Streams() {
                     <Avatar>
                       {users && users[index] ? (
                         <AvatarImage
-                          src={users[index].profile_image_url} // Error: The photos currently don't go to the correct streamers
+                          src={streams[index].thumbnail_url} 
                           width={48}
                           height={48}
                           loading="lazy"
