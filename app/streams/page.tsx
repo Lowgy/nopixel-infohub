@@ -18,7 +18,7 @@ interface Stream {
   title: string;
   type: string;
   display_name: string;
-  broadcast_login: string;
+  broadcaster_login: string;
   user_id: string;
 }
 
@@ -58,7 +58,6 @@ export default function Streams() {
       )
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           const filteredStreams = data.data.filter(
             (stream: Stream) =>
               stream.title.includes('NoPixel') ||
@@ -71,7 +70,6 @@ export default function Streams() {
           );
           setStreams(filteredStreams);
           const userIds = filteredStreams.map((stream: Stream) => stream.id);
-          console.log(filteredStreams, userIds);
           getUsers(userIds, token.access_token);
           setLoading(false);
         });
@@ -145,12 +143,9 @@ export default function Streams() {
             >
               <Image
                 alt="Profile Image"
-                src={`https://static-cdn.jtvnw.net/previews-ttv/live_user_${
-                  stream.broadcast_login
-                }-${320}x${180}.jpg`}
+                src={`https://static-cdn.jtvnw.net/previews-ttv/live_user_${stream.broadcaster_login.toLowerCase()}-${320}x${180}.jpg`}
                 width={320}
                 height={180}
-                loading="lazy"
               />
               <div className="flex flex-col">
                 <div className="flex flex-row p-1">
@@ -158,7 +153,7 @@ export default function Streams() {
                     <Avatar>
                       {users && users[index] ? (
                         <AvatarImage
-                          src={streams[index].thumbnail_url} 
+                          src={streams[index].thumbnail_url}
                           width={48}
                           height={48}
                           loading="lazy"
