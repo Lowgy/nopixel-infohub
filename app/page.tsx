@@ -44,7 +44,6 @@ const servers = [
     status: 'Online',
     currentPlayerCount: 220,
     totalPlayerCount: 220,
-    // Convert the string to calculate the time difference until 1AM and 1PM CST
     tsunami: <CountdownTimer targetHour={closestAllowCountdown} />,
   },
   {
@@ -54,7 +53,6 @@ const servers = [
     status: 'Online',
     currentPlayerCount: 220,
     totalPlayerCount: 220,
-    // Convert the string to calculate the time difference until 6AM, 2PM, and 10PM CST
     tsunami: <CountdownTimer targetHour={closestPublicCountdown} />,
   },
   {
@@ -64,7 +62,6 @@ const servers = [
     status: 'Online',
     currentPlayerCount: 220,
     totalPlayerCount: 220,
-    // Convert the string to calculate the time difference until 6AM, 2PM, and 10PM CST
     tsunami: <CountdownTimer targetHour={closestPublicCountdown} />,
   },
 ];
@@ -172,7 +169,7 @@ export default function Home() {
                   </div>
                 </CardContent>
                 <CardFooter>
-                  <div>
+                  <div className="flex justify-between">
                     <span className="font-bold text-black">Tsunami Timer:</span>{' '}
                     {server.tsunami}
                   </div>
@@ -181,6 +178,7 @@ export default function Home() {
             </TabsContent>
           ))}
         </Tabs>
+        
       </div>
     </main>
   );
