@@ -101,14 +101,14 @@ export default function Home() {
       <div className="flex flex-col items-center w-1/2 bg-white rounded-lg p-5">
         <h1 className="font-bold text-3xl mb-4">NoPixel InfoHub</h1>
         <p className="text-center mb-2">
-          Welcome to NoPixel InfoHub! Your #1 source for server status of
+          Welcome to the NoPixel InfoHub! Your #1 source for server status of
           NoPixel 4.0 servers! The purpose of this site is to provide a quick
           look at the status of the NoPixel 4.0 servers, to help RPers and
           viewers alike to see if the server is online, current player count and
           tsunami timer.
         </p>
         <p className="font-bold text-red-600 text-center">
-          THIS SITE IS NO AFFILIATED WITH OFFICIAL NOPIXEL AND IS STRICTLY A
+          THIS SITE IS NOT AFFILIATED WITH OFFICIAL NOPIXEL AND IS STRICTLY A
           SIDE PROJECT FOR DEVELOPMENT PRACTICE!
         </p>
       </div>
@@ -145,13 +145,7 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-col items-center">
-                    {/* <Image
-                      src="/images/np-logo.png"
-                      alt="NoPixel Logo"
-                      width={128}
-                      height={128}
-                    /> */}
-                    Image of some sort?
+                  <p className="text-xl font-bold">Players Online</p>
                     <p className="text-2xl font-bold">
                       {playerData !== undefined
                         ? playerData.length <= 220
@@ -165,7 +159,6 @@ export default function Home() {
                           : '220'
                         : '220'}
                     </p>
-                    <p className="text-xl font-bold">Players Online</p>
                   </div>
                 </CardContent>
                 <CardFooter>
