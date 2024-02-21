@@ -5,7 +5,7 @@ interface CountdownTimerProps {
 }
 
 const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetHour }) => {
-  const [countdown, setCountdown] = useState<number | null>(null);
+  const [countdown, setCountdown] = useState<number>(0);
 
   useEffect(() => {
     const calculateCountdown = () => {
@@ -63,7 +63,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetHour }) => {
   };
 
   // If the countdown is null, display "N/A." Otherwise, display the formatted time
-  return <p>{countdown !== null ? formatTime(countdown) : 'N/A'}</p>;
+  return (countdown !== null ? formatTime(countdown) : 'N/A');
 };
 
 export default CountdownTimer;

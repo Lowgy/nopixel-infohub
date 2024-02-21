@@ -20,14 +20,18 @@ const publicHours = [6, 14, 22]; // 6 for 6am, 14 for 2pm, 22 for 10pm
 // Function to find the closest countdown time
 const findClosestCountdown = (hoursArray: number[]) => {
   const currentHours = new Date().getHours();
-  let targetHour = hoursArray[0];
+  let [targetHour] = hoursArray;
 
   for (let i = 0; i < hoursArray.length; i++) {
-    if (hoursArray[i] > currentHours) {
+    if (hoursArray[i] >= currentHours) {
       targetHour = hoursArray[i];
       break;
     }
+
   }
+
+  // If the hour count = 0 and minute count <= 20, change color of countdown timer
+  // ERROR: The logic is saying that 13 is greater than currentHours
 
   return targetHour;
 };
