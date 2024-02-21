@@ -145,9 +145,16 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-col items-center">
-                  <p className="text-xl font-bold">Players Online</p>
+                  <p className="text-xl font-bold">Tsunami Timer</p>
                     <p className="text-2xl font-bold">
-                      {playerData !== undefined
+                    {server.tsunami}
+                    </p>
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <div className="flex justify-between">
+                    <span className="font-bold text-black">Players Online:</span>{' '}
+                    {playerData !== undefined
                         ? playerData.length <= 220
                           ? playerData.length
                           : '220'
@@ -158,13 +165,6 @@ export default function Home() {
                           ? infoData.vars.sv_maxClients
                           : '220'
                         : '220'}
-                    </p>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <div className="flex justify-between">
-                    <span className="font-bold text-black">Tsunami Timer:</span>{' '}
-                    {server.tsunami}
                   </div>
                 </CardFooter>
               </Card>
