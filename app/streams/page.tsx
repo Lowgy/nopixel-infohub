@@ -82,7 +82,7 @@ export default function Streams() {
       {
         method: 'GET',
         headers: {
-          'Client-Id': `${process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID}`,
+          'Client-Id': `${process.env.NEXT_PUBLIC_TTWITCH_CLIENT_ID}`,
           Authorization: `Bearer ${accessToken}`,
         },
       }
